@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Job Application Tracker</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+   <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+
+
+
+     
+
+<style>
+  /* bounce cards */
+@keyframes bounceCard {
+  0% { transform: translateY(0); }
+  30% { transform: translateY(-8px); }
+  60% { transform: translateY(0); }
+  80% { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+
+/* bounce  cards  hover */
+.dashboard-card:hover{
+  animation: bounceCard 0.6s ease;
+}
+
+
+
+
+
+
+
+
+
+    </style>
+
+
+  </head>
+
+  <body>
+    <!-- title of page -->
+    <h1 class="text-3xl font-bold  text-clifford">
+     Job Application Tracker
+    </h1>
+
+<!-- card dancing -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+
+  <div class="bg-white rounded-lg p-4 shadow dashboard-card">
+    <p class="text-sm text-gray-500">Total Jobs</p>
+    <p id="totalCount" class="text-2xl font-bold">0</p>
+  </div>
+
+  <div class="bg-white rounded-lg p-4 shadow dashboard-card">
+    <p class="text-sm text-gray-500">Interview</p>
+    <p id="interviewCount" class="text-2xl font-bold text-green-600">0</p>
+  </div>
+
+  <div class="bg-white rounded-lg p-4 shadow dashboard-card">
+    <p class="text-sm text-gray-500">Rejected</p>
+    <p id="rejectedCount" class="text-2xl font-bold text-red-500">0</p>
+  </div>
+
+</div>
+
+   <div class="flex items-center justify-between mb-3">
+  <h2 class="font-semibold">Available Jobs</h2>
+  <span id="tabCount" class="text-sm text-gray-500"></span>
+</div>
+   
+   
+   
+   
+   
+   
+   
+   <script>
+
+const jobs = [
+  {id:1,companyName:"Mobile First Corp",position:"React Native Developer",
+  location:"Remote",type:"Full-time",salary:"$130,000 - $175,000",
+  description:"Build cross-platform mobile applications using React Native.Work on products used by millions of users worldwide.",
+  status:"All"},
+  
+  {id:2,companyName:"WebPro Agency",position:"Junior Web Developer",location:"Remote",
+  type:"Contract",salary:"$700",
+  description:"Maintain landing pages and small business websites using vanilla JavaScript and CSS.",status:"All"},
+  
+  {id:3,companyName:"DataViz Solutions",position:"Data Visualization Specialist",
+  location:"Chattogram, Bangladesh",type:"Full-time",salary:"৳70,000",
+  description:"Create dashboards and charts for business analytics and reporting systems.",
+  status:"All"},
+
+  {id:4,companyName:"CloudFirst Inc",position:"Backend Developer",location:"Remote",
+  type:"Full-time",salary:"$1200",
+  description:"Develop REST APIs and manage server side logic for production systems.",
+  status:"All"},
+
+  {id:5,companyName:"Innovation Lab",position:"UI/UX Intern",location:"Dhaka, Bangladesh",type:"Internship",
+  salary:"৳15,000",description:"Design wireframes and improve user experience for internal products.",status:"All"},
+
+  {id:6,companyName:"MegaCorp Solutions",position:"JavaScript Developer",location:"Sylhet, Bangladesh",type:"Full-time",
+  salary:"৳65,000",description:"Work on large scale frontend applications using modern JavaScript.",status:"All"},
+
+  {id:7,companyName:"StartupX",position:"Full Stack Engineer",location:"Remote",type:"Full-time",salary:"$1500",
+  description:"Build scalable full stack applications for startup products.",status:"All"},
+  
+  {id:8,companyName:"TechCorp Industries",position:"Software Engineer",location:"Rajshahi, Bangladesh",type:"Full-time",
+  salary:"৳75,000",description:"Develop internal tools and enterprise software systems for business teams.",status:"All"},
+];
+
+
+
+
+
+
+
+    </script>
+  </body>
+</html> 
