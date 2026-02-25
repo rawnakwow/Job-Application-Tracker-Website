@@ -8,6 +8,7 @@
 
    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 
 
@@ -74,6 +75,23 @@
 </div>
    
    
+<!-- Tabs -->
+<div class="tabs tabs-bordered mb-4">
+  <a class="tab tab-active" data-name="all">All</a>
+  <a class="tab" data-name="interview">Interview</a>
+  <a class="tab" data-name="rejected">Rejected</a>
+</div>
+
+<!-- Cards -->
+<div id="cardArea" class="space-y-4"></div>
+
+<!-- Empty message -->
+<div id="noData" class="hidden bg-white rounded-lg p-10 shadow text-center">
+  <h3 class="font-semibold">No jobs found</h3>
+  <p class="text-sm text-gray-500">Try another tab</p>
+</div>
+
+</div>
    
    
    
@@ -113,8 +131,6 @@ const jobs = [
   {id:8,companyName:"TechCorp Industries",position:"Software Engineer",location:"Rajshahi, Bangladesh",type:"Full-time",
   salary:"৳75,000",description:"Develop internal tools and enterprise software systems for business teams.",status:"All"},
 ];
-
-
 
 
 
