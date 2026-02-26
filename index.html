@@ -16,6 +16,14 @@
      
 
 <style>
+  *{
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    
+  }
+  
+  
+  
   /* bounce cards */
 @keyframes bounceCard {
   0% { transform: translateY(0); }
@@ -213,7 +221,7 @@ if(activeTab === "all"){
      
        <span class="badgeBox ${job.status.toLowerCase()}">
         ${job.status === "All" ? "NOT APPLIED" : job.status.toUpperCase()}
-      </span>
+         </span>
         </div>
 
       <button class="btn btn-ghost btn-sm text-red-500 deleteBtn" data-id="${job.id}">
