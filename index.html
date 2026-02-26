@@ -30,11 +30,28 @@
   animation: bounceCard 0.6s ease;
 }
 
+.badgeBox{
+  font-size:11px;
+  padding:3px 8px;
+  border-radius:6px;
+  display:inline-block;
+  margin-top:6px;
+}
+
+.badgeBox.notapplied{ background:#1f2933;color:#cbd5e1; }
+.badgeBox.interview{ background:#064e3b;color:#34d399; }
+.badgeBox.rejected{ background:#7f1d1d;color:#f87171; }
 
 
+/* card style when status is changed */
+.statusBox{
+  background:#0b1220;
+  color:#e5e7eb;
+  border:1px solid #1f2933;
+}
 
-
-
+.statusBox.interview{ border-left:4px solid #22c55e; }
+.statusBox.rejected{ border-left:4px solid #ef4444; }
 
 
 
@@ -142,9 +159,12 @@ const jobs = [
 
 
 let activeTab = "all";
-
+const cardArea = document.getElementById("cardArea"); 
 const noData = document.getElementById("noData");
 const tabButtons = document.querySelectorAll(".tab");
+
+
+
 
 /* now job list show in cards */
 
@@ -189,10 +209,23 @@ if(activeTab === "all"){
       <p class="text-sm text-gray-500">${job.salary}</p>
       <p class="text-sm text-gray-500">${job.description}</p>
        </div>
-     <button class="btn btn-ghost btn-sm text-red-500 deleteBtn" data-id="${job.id}">
-          <i class="fa-regular fa-trash-can"></i>
-        </button>
-   </div>
+     
+     
+       <span class="badgeBox ${job.status.toLowerCase()}">
+        ${job.status === "All" ? "NOT APPLIED" : job.status.toUpperCase()}
+      </span>
+        </div>
+
+      <button class="btn btn-ghost btn-sm text-red-500 deleteBtn" data-id="${job.id}">
+      <i class="fa-regular fa-trash-can"></i>
+    </button>
+  </div>
+
+  
+      <p class="text-sm text-gray-600 my-3">
+        ${job.info || ""}
+      </p>
+
   <div class="flex gap-2 mt-3">
 
         <button class="btn btn-sm btn-outline btn-success interviewBtn" data-id="${job.id}">
@@ -215,7 +248,7 @@ if(activeTab === "all"){
 
 
 /*  job list in cards count update */
-
+function updateCounts(){
  document.getElementById("totalCount").innerText = jobs.length;
 
   document.getElementById("interviewCount").innerText =
@@ -224,31 +257,110 @@ if(activeTab === "all"){
   document.getElementById("rejectedCount").innerText =
     jobs.filter(job => job.status === "Rejected").length;
 
+}
 
 
 
 
 
+/* card buttons works */
+cardArea.addEventListener("click", function(e){
+
+  const id = Number(e.target.closest("button")?.dataset.id);
+
+  if(!id) return;
+
+  const selectedJob = jobs.find(job => job.id === id);
+
+  if(!selectedJob) return;
+
+  if(e.target.closest(".interviewBtn")){
+    selectedJob.status = "Interview";
+    activeTab = "interview";
+    setActiveTab();
+    showJobs(jobs);
+  }
+
+  if(e.target.closest(".rejectBtn")){
+    selectedJob.status = "Rejected";
+    activeTab = "rejected";
+    setActiveTab();
+    showJobs(jobs);
+  }
+
+  if(e.target.closest(".deleteBtn")){
+    const index = jobs.findIndex(job => job.id === id);
+    jobs.splice(index,1);
+    showJobs(jobs);
+  }
+
+});
 
 
 
+/* tab buttons works */
+
+
+tabButtons.forEach(tab => {
+
+  tab.addEventListener("click", function(){
+
+    activeTab = tab.dataset.name;
+
+    tabButtons.forEach(t => {
+      t.classList.remove("tab-active");
+    });
+
+    tab.classList.add("tab-active");
+
+    showJobs(jobs); 
+
+  });
+
+});
+
+
+/* keep tab highlight correct */
+function setActiveTab(){
+  tabButtons.forEach(tab => {
+    tab.classList.toggle("tab-active", tab.dataset.name === activeTab);
+  });
+
+}
+
+/* button click handling */
+cardArea.addEventListener("click", e => {
+
+  const jobId = Number(e.target.dataset.id);
+  const selectedJob = jobList.find(j => j.id === jobId);
+
+  if(!selectedJob) return;
+
+  if(e.target.classList.contains("interviewBtn") && selectedJob.status !== "Interview"){
+    selectedJob.status = "Interview";
+    activeTab = "interview";
+    setActiveTab();
+    showJobs();
+  }
+
+  if(e.target.classList.contains("rejectBtn") && selectedJob.status !== "Rejected"){
+    selectedJob.status = "Rejected";
+    activeTab = "rejected";
+    setActiveTab();
+    showJobs();
+  }
+
+  if(e.target.classList.contains("removeBtn")){
+    const index = jobList.findIndex(j => j.id === jobId);
+    jobList.splice(index,1);
+    showJobs();
+  }
+
+});
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* first load */
 showJobs(jobs);
 
 
