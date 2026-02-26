@@ -88,7 +88,7 @@
 <!-- Empty message -->
 <div id="noData" class="hidden bg-white rounded-lg p-10 shadow text-center">
      <img 
-    src=".C:\Users\rawnak\Downloads\projects\Job_tracking Assignment - 4\jobs.png"
+    src="jobs.png"
     alt="No jobs found"
     class="w-32 mx-auto mb-4"
   />
@@ -140,43 +140,116 @@ const jobs = [
 ];
  
 
+
+let activeTab = "all";
+
+const noData = document.getElementById("noData");
+const tabButtons = document.querySelectorAll(".tab");
+
 /* now job list show in cards */
 
 
-function showJobs(jobsList) {
+function showJobs(jobs) {
   const cardArea = document.getElementById("cardArea");
   cardArea.innerHTML = "";
+let displayJobs = [];
 
-  jobsList.forEach(job => {
+
+if(activeTab === "all"){
+    displayJobs = jobs;
+  }
+  else if(activeTab === "interview"){
+    displayJobs = jobs.filter(job => job.status === "Interview");
+  }
+  else if(activeTab === "rejected"){
+    displayJobs = jobs.filter(job => job.status === "Rejected");
+  }
+
+  document.getElementById("tabCount").innerText =
+    displayJobs.length + " Jobs";
+
+  if(displayJobs.length === 0){
+    noData.classList.remove("hidden");
+  }else{
+    noData.classList.add("hidden");
+  }
+
+  
+
+  displayJobs.forEach(job => {
     const jobCard = document.createElement("div");
     jobCard.className = "bg-white rounded-lg p-4 shadow";
     jobCard.innerHTML = `
+      <div class="flex justify-between">
+        <div>
       <h3 class="font-bold text-lg">${job.companyName}</h3>
       <p class="text-sm text-gray-500">${job.position}</p>
       <p class="text-sm text-gray-500">${job.location}</p>
       <p class="text-sm text-gray-500">${job.type}</p>
       <p class="text-sm text-gray-500">${job.salary}</p>
       <p class="text-sm text-gray-500">${job.description}</p>
+       </div>
+     <button class="btn btn-ghost btn-sm text-red-500 deleteBtn" data-id="${job.id}">
+          <i class="fa-regular fa-trash-can"></i>
+        </button>
+   </div>
+  <div class="flex gap-2 mt-3">
+
+        <button class="btn btn-sm btn-outline btn-success interviewBtn" data-id="${job.id}">
+          Interview
+        </button>
+
+        <button class="btn btn-sm btn-outline btn-error rejectBtn" data-id="${job.id}">
+          Rejeted
+        </button>
+
+      </div>
     `;
+    
     cardArea.appendChild(jobCard);
   });
+  updateCounts();
 }
+
+
+
+
+/*  job list in cards count update */
+
+ document.getElementById("totalCount").innerText = jobs.length;
+
+  document.getElementById("interviewCount").innerText =
+    jobs.filter(job => job.status === "Interview").length;
+
+  document.getElementById("rejectedCount").innerText =
+    jobs.filter(job => job.status === "Rejected").length;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 showJobs(jobs);
-
-
-/* now job list show in cards look like box */
-function updateCounts() {
-    const totalCount = document.getElementById("totalCount");
-    const interviewCount = document.getElementById("interviewCount");
-    const rejectedCount = document.getElementById("rejectedCount");
-
-    totalCount.textContent = jobs.length;
-    interviewCount.textContent = jobs.filter(job => job.status === "Interview").length;
-    rejectedCount.textContent = jobs.filter(job => job.status === "Rejected").length;
-}
-
-
 
 
     </script>
