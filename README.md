@@ -103,12 +103,12 @@ preventDefault() and stopPropagation() both methods manage event behaviors, but 
 
 * **preventDefault()**
    preventDefault() cancels the browser's default native behavior for an element.
-   *Example*: Stops a form from reloading the page or an <a> link from navigating to a URL. 
+   -**Example:** Stops a form from reloading the page or an <a> link from navigating to a URL. 
    It does not stop the event from bubbling up the DOM tree.
 
 * **stopPropagation()**
    stopPropagation() stops the event's journey from traveling any further up the DOM tree.
-  *Example*: Stops a button click from triggering a click event on its parent card container.
+  -**Example:** Stops a button click from triggering a click event on its parent card container.
    It does not stop default browser behaviors like form submissions or link redirects.
 
 
