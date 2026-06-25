@@ -1,377 +1,67 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Application Tracker</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-   <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 
 
-
-     
-
-<style>
-  *{
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-    
-  }
-  
-  
-  
-  /* bounce cards */
-@keyframes bounceCard {
-  0% { transform: translateY(0); }
-  30% { transform: translateY(-8px); }
-  60% { transform: translateY(0); }
-  80% { transform: translateY(-4px); }
-  100% { transform: translateY(0); }
-}
-
-/* bounce  cards  hover */
-.dashboard-card:hover{
-  animation: bounceCard 0.6s ease;
-}
-
-.badgeBox{
-  font-size:11px;
-  padding:3px 8px;
-  border-radius:6px;
-  display:inline-block;
-  margin-top:6px;
-}
-
-.badgeBox.notapplied{ background:#1f2933;color:#cbd5e1; }
-.badgeBox.interview{ background:#064e3b;color:#34d399; }
-.badgeBox.rejected{ background:#7f1d1d;color:#f87171; }
-
-
-/* card style when status is changed */
-.statusBox{
-  background:#0b1220;
-  color:#e5e7eb;
-  border:1px solid #1f2933;
-}
-
-.statusBox.interview{ border-left:4px solid #22c55e; }
-.statusBox.rejected{ border-left:4px solid #ef4444; }
-
-
-
-    </style>
-
-
-  </head>
-
-  <body>
-    <!-- title of page -->
-    <h1 class="text-3xl font-bold  text-clifford">
-     Job Application Tracker
-    </h1>
-
-<!-- card dancing -->
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-
-  <div class="bg-white rounded-lg p-4 shadow dashboard-card">
-    <p class="text-sm text-gray-500">Total Jobs</p>
-    <p id="totalCount" class="text-2xl font-bold">0</p>
-  </div>
-
-  <div class="bg-white rounded-lg p-4 shadow dashboard-card">
-    <p class="text-sm text-gray-500">Interview</p>
-    <p id="interviewCount" class="text-2xl font-bold text-green-600">0</p>
-  </div>
-
-  <div class="bg-white rounded-lg p-4 shadow dashboard-card">
-    <p class="text-sm text-gray-500">Rejected</p>
-    <p id="rejectedCount" class="text-2xl font-bold text-red-500">0</p>
-  </div>
-
-</div>
-
-   <div class="flex items-center justify-between mb-3">
-  <h2 class="font-semibold">Available Jobs</h2>
-  <span id="tabCount" class="text-sm text-gray-500"></span>
-</div>
-   
-   
-<!-- Tabs -->
-<div class="tabs tabs-bordered mb-4">
-  <a class="tab tab-active" data-name="all">All</a>
-  <a class="tab" data-name="interview">Interview</a>
-  <a class="tab" data-name="rejected">Rejected</a>
-</div>
-
-<!-- Cards -->
-<div id="cardArea" class="space-y-4"></div>
-
-<!-- Empty message -->
-<div id="noData" class="hidden bg-white rounded-lg p-10 shadow text-center">
-     <img 
-    src="jobs.png"
-    alt="No jobs found"
-    class="w-32 mx-auto mb-4"
-  />
-  <h3 class="font-semibold">No jobs found</h3>
-  <p class="text-sm text-gray-500">Try another tab</p>
-</div>
-
-</div>
-   
-   
-   
-    
-   
-   <script>
-
-
-/* main job list */
-const jobs = [
-  {id:1,companyName:"Mobile First Corp",position:"React Native Developer",
-  location:"Remote",type:"Full-time",salary:"$130,000 - $175,000",
-  description:"Build cross-platform mobile applications using React Native.Work on products used by millions of users worldwide.",
-  status:"All"},
-  
-  {id:2,companyName:"WebPro Agency",position:"Junior Web Developer",location:"Remote",
-  type:"Contract",salary:"$700",
-  description:"Maintain landing pages and small business websites using vanilla JavaScript and CSS.",status:"All"},
-  
-  {id:3,companyName:"DataViz Solutions",position:"Data Visualization Specialist",
-  location:"Chattogram, Bangladesh",type:"Full-time",salary:"৳70,000",
-  description:"Create dashboards and charts for business analytics and reporting systems.",
-  status:"All"},
-
-  {id:4,companyName:"CloudFirst Inc",position:"Backend Developer",location:"Remote",
-  type:"Full-time",salary:"$1200",
-  description:"Develop REST APIs and manage server side logic for production systems.",
-  status:"All"},
-
-  {id:5,companyName:"Innovation Lab",position:"UI/UX Intern",location:"Dhaka, Bangladesh",type:"Internship",
-  salary:"৳15,000",description:"Design wireframes and improve user experience for internal products.",status:"All"},
-
-  {id:6,companyName:"MegaCorp Solutions",position:"JavaScript Developer",location:"Sylhet, Bangladesh",type:"Full-time",
-  salary:"৳65,000",description:"Work on large scale frontend applications using modern JavaScript.",status:"All"},
-
-  {id:7,companyName:"StartupX",position:"Full Stack Engineer",location:"Remote",type:"Full-time",salary:"$1500",
-  description:"Build scalable full stack applications for startup products.",status:"All"},
-  
-  {id:8,companyName:"TechCorp Industries",position:"Software Engineer",location:"Rajshahi, Bangladesh",type:"Full-time",
-  salary:"৳75,000",description:"Develop internal tools and enterprise software systems for business teams.",status:"All"},
-];
- 
-
-
-let activeTab = "all";
-const cardArea = document.getElementById("cardArea"); 
-const noData = document.getElementById("noData");
-const tabButtons = document.querySelectorAll(".tab");
-
-
-
-
-/* now job list show in cards */
-
-
-function showJobs(jobs) {
-  const cardArea = document.getElementById("cardArea");
-  cardArea.innerHTML = "";
-let displayJobs = [];
-
-
-if(activeTab === "all"){
-    displayJobs = jobs;
-  }
-  else if(activeTab === "interview"){
-    displayJobs = jobs.filter(job => job.status === "Interview");
-  }
-  else if(activeTab === "rejected"){
-    displayJobs = jobs.filter(job => job.status === "Rejected");
-  }
-
-  document.getElementById("tabCount").innerText =
-    displayJobs.length + " Jobs";
-
-  if(displayJobs.length === 0){
-    noData.classList.remove("hidden");
-  }else{
-    noData.classList.add("hidden");
-  }
-
-  
-
-  displayJobs.forEach(job => {
-    const jobCard = document.createElement("div");
-    jobCard.className = "bg-white rounded-lg p-4 shadow";
-    jobCard.innerHTML = `
-      <div class="flex justify-between">
-        <div>
-      <h3 class="font-bold text-lg">${job.companyName}</h3>
-      <p class="text-sm text-gray-500">${job.position}</p>
-      <p class="text-sm text-gray-500">${job.location}</p>
-      <p class="text-sm text-gray-500">${job.type}</p>
-      <p class="text-sm text-gray-500">${job.salary}</p>
-      <p class="text-sm text-gray-500">${job.description}</p>
-       </div>
-     
-     
-       <span class="badgeBox ${job.status.toLowerCase()}">
-        ${job.status === "All" ? "NOT APPLIED" : job.status.toUpperCase()}
-         </span>
-        </div>
-
-      <button class="btn btn-ghost btn-sm text-red-500 deleteBtn" data-id="${job.id}">
-      <i class="fa-regular fa-trash-can"></i>
-    </button>
-  </div>
-
-  
-      <p class="text-sm text-gray-600 my-3">
-        ${job.info || ""}
-      </p>
-
-  <div class="flex gap-2 mt-3">
-
-        <button class="btn btn-sm btn-outline btn-success interviewBtn" data-id="${job.id}">
-          Interview
-        </button>
-
-        <button class="btn btn-sm btn-outline btn-error rejectBtn" data-id="${job.id}">
-          Rejeted
-        </button>
-
-      </div>
-    `;
-    
-    cardArea.appendChild(jobCard);
-  });
-  updateCounts();
-}
-
-
-
-
-/*  job list in cards count update */
-function updateCounts(){
- document.getElementById("totalCount").innerText = jobs.length;
-
-  document.getElementById("interviewCount").innerText =
-    jobs.filter(job => job.status === "Interview").length;
-
-  document.getElementById("rejectedCount").innerText =
-    jobs.filter(job => job.status === "Rejected").length;
-
-}
-
-
-
-
-
-/* card buttons works */
-cardArea.addEventListener("click", function(e){
-
-  const id = Number(e.target.closest("button")?.dataset.id);
-
-  if(!id) return;
-
-  const selectedJob = jobs.find(job => job.id === id);
-
-  if(!selectedJob) return;
-
-  if(e.target.closest(".interviewBtn")){
-    selectedJob.status = "Interview";
-    activeTab = "interview";
-    setActiveTab();
-    showJobs(jobs);
-  }
-
-  if(e.target.closest(".rejectBtn")){
-    selectedJob.status = "Rejected";
-    activeTab = "rejected";
-    setActiveTab();
-    showJobs(jobs);
-  }
-
-  if(e.target.closest(".deleteBtn")){
-    const index = jobs.findIndex(job => job.id === id);
-    jobs.splice(index,1);
-    showJobs(jobs);
-  }
-
-});
-
-
-
-/* tab buttons works */
-
-
-tabButtons.forEach(tab => {
-
-  tab.addEventListener("click", function(){
-
-    activeTab = tab.dataset.name;
-
-    tabButtons.forEach(t => {
-      t.classList.remove("tab-active");
-    });
-
-    tab.classList.add("tab-active");
-
-    showJobs(jobs); 
-
-  });
-
-});
-
-
-/* keep tab highlight correct */
-function setActiveTab(){
-  tabButtons.forEach(tab => {
-    tab.classList.toggle("tab-active", tab.dataset.name === activeTab);
-  });
-
-}
-
-/* button click handling */
-cardArea.addEventListener("click", e => {
-
-  const jobId = Number(e.target.dataset.id);
-  const selectedJob = jobList.find(j => j.id === jobId);
-
-  if(!selectedJob) return;
-
-  if(e.target.classList.contains("interviewBtn") && selectedJob.status !== "Interview"){
-    selectedJob.status = "Interview";
-    activeTab = "interview";
-    setActiveTab();
-    showJobs();
-  }
-
-  if(e.target.classList.contains("rejectBtn") && selectedJob.status !== "Rejected"){
-    selectedJob.status = "Rejected";
-    activeTab = "rejected";
-    setActiveTab();
-    showJobs();
-  }
-
-  if(e.target.classList.contains("removeBtn")){
-    const index = jobList.findIndex(j => j.id === jobId);
-    jobList.splice(index,1);
-    showJobs();
-  }
-
-});
-
-
-
-/* first load */
-showJobs(jobs);
-
-
-    </script>
-  </body>
-</html> 
+</head>
+<body class="bg-gray-50 min-h-screen p-4 sm:p-8 font-sans antialiased text-gray-800">
+
+    <div class="max-w-6xl mx-auto space-y-8">
+        <header>
+            <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Job Application Tracker</h1>
+        </header>
+
+        <section class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-white p-5 rounded-lg border border-gray-100 shadow-xs">
+                <p class="text-xs font-semibold text-gray-400">Total</p>
+                <h3 id="count-total" class="text-2xl font-bold text-slate-800 mt-1">0</h3>
+            </div>
+            <div class="bg-white p-5 rounded-lg border border-gray-100 shadow-xs">
+                <p class="text-xs font-semibold text-gray-400">Interview</p>
+                <h3 id="count-interview" class="text-2xl font-bold text-emerald-600 mt-1">0</h3>
+            </div>
+            <div class="bg-white p-5 rounded-lg border border-gray-100 shadow-xs">
+                <p class="text-xs font-semibold text-gray-400">Rejected</p>
+                <h3 id="count-rejected" class="text-2xl font-bold text-rose-600 mt-1">0</h3>
+            </div>
+        </section>
+
+        <section class="bg-white rounded-xl border border-gray-100 shadow-xs p-6 space-y-6">
+            
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-bold text-slate-800">Available Jobs</h2>
+                <span class="text-sm font-medium text-gray-400"><span id="section-count">0</span> jobs</span>
+            </div>
+
+            <div class="flex flex-wrap gap-2 text-xs font-medium">
+                <button onclick="switchTab('all')" id="tab-all" class="px-4 py-2 rounded bg-slate-900 text-white transition-all">All</button>
+                <button onclick="switchTab('interview')" id="tab-interview" class="px-4 py-2 rounded bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all">Interview</button>
+                <button onclick="switchTab('rejected')" id="tab-rejected" class="px-4 py-2 rounded bg-gray-100 text-gray-600 hover:bg-gray-200 transition-all">Rejected</button>
+            </div>
+
+            <div id="job-cards-container" class="space-y-4">
+            </div>
+
+            <div id="empty-state" class="hidden flex-col items-center justify-center py-20 text-center space-y-3">
+                <div class="text-blue-500 bg-blue-50 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl">
+                    <i class="fa-regular fa-file-lines"></i>
+                </div>
+                <h3 class="text-lg font-bold text-slate-800">No jobs available</h3>
+                <p class="text-xs text-gray-400 max-w-xs">Check back soon for new job opportunities.</p>
+            </div>
+
+        </section>
+    </div>
+
+    <script src="Script.js"></script>
+</body>
+</html>
